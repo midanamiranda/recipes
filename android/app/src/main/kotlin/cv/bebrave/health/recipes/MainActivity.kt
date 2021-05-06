@@ -1,0 +1,6 @@
+package cv.bebrave.health.recipes
+
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity() {
+}
