@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:recipes/services/models/recipes_result.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:recipes/ui/home/pages/recipes_list.dart';
+import 'dart:io' show Platform;
 
 import 'core/colors.dart';
 
@@ -62,5 +64,33 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       backgroundColor: backgroundColor,// This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  Future<void> appCenter() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    const platform = const MethodChannel('recipes.platform/appcenter');
+
+    var appSecretAndroid = '';
+    var appSecretIOS = '';
+
+    if (Platform.isAndroid) appSecretAndroid = await platform.invokeMethod('getAndroidAppSecret');
+    if (Platform.isIOS) appSecretIOS = await platform.invokeMethod('getIOSAppSecret');
+
+    await AppCenter.startAsync(
+      appSecretAndroid: appSecretAndroid, //YOUR android APPSECRET CODE
+      appSecretIOS: appSecretIOS, //YOUR iOS APPSECRET CODE
+      enableAnalytics: true, // Defaults to true
+      enableCrashes: true, // Defaults to true
+      enableDistribute: true, // Defaults to false
+      usePrivateDistributeTrack: false, // Defaults to false
+      disableAutomaticCheckForUpdate: false, // Defaults to false
+    );
+
+    await AppCenter.configureDistributeDebugAsync(enabled: false);
+    await AppCenter.configureAnalyticsAsync(enabled: true);
+    await AppCenter.configureCrashesAsync(enabled: true);
+    await AppCenter.configureDistributeAsync(enabled: true);
+    await AppCenter.configureDistributeDebugAsync(enabled: true); // Android Only
+    await AppCenter.checkForUpdateAsync(); // Manually check for update
   }
 }
