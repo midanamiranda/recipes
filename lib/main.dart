@@ -79,18 +79,17 @@ class _MyHomePageState extends State<MyHomePage> {
     await AppCenter.startAsync(
       appSecretAndroid: appSecretAndroid, //YOUR android APPSECRET CODE
       appSecretIOS: appSecretIOS, //YOUR iOS APPSECRET CODE
-      enableAnalytics: true, // Defaults to true
-      enableCrashes: true, // Defaults to true
+      enableAnalytics: false, // Defaults to true
+      enableCrashes: false, // Defaults to true
       enableDistribute: true, // Defaults to false
       usePrivateDistributeTrack: false, // Defaults to false
-      disableAutomaticCheckForUpdate: false, // Defaults to false
+      disableAutomaticCheckForUpdate: true, // Defaults to false
     );
 
-    await AppCenter.configureDistributeDebugAsync(enabled: false);
-    await AppCenter.configureAnalyticsAsync(enabled: true);
-    await AppCenter.configureCrashesAsync(enabled: true);
+    // await AppCenter.configureAnalyticsAsync(enabled: true);
+    // await AppCenter.configureCrashesAsync(enabled: true);
     await AppCenter.configureDistributeAsync(enabled: true);
-    await AppCenter.configureDistributeDebugAsync(enabled: true); // Android Only
-    await AppCenter.checkForUpdateAsync(); // Manually check for update
+    // await AppCenter.configureDistributeDebugAsync(enabled: true); // Android Only
+    // await AppCenter.checkForUpdateAsync(); // Manually check for update
   }
 }
