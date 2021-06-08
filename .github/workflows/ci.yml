@@ -35,7 +35,7 @@ jobs:
             export ANDROID_DEBUG=true
             export APPCENTER_BUILD_ID=1
             flutter pub get
-            flutter drive --driver=test_driver/integration_test.dart --target=integration_test/app_test.dart --flavor googlePlay
+            flutter drive --driver=test_driver/integration_driver.dart --target=integration_test/app_test.dart --flavor googlePlay
           #- name: upload screenshot
           #uses: actions/upload-artifact@master
           #with:
