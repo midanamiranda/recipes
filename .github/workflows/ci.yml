@@ -44,6 +44,8 @@ jobs:
 
   build_appbundle:
     name: Flutter Build (Android)
+    env:
+      APPCENTER_BUILD_ID: 1
     needs: [flutter_test]
     runs-on: ubuntu-latest
     steps:
