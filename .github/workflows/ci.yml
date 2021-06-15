@@ -9,7 +9,7 @@ jobs:
     name: Flutter Build (Android)
     env:
       APPCENTER_BUILD_ID: 1
-    needs: [flutter_test]
+    #needs: [flutter_test]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
