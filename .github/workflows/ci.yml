@@ -23,9 +23,9 @@ jobs:
       #- run: flutter format --set-exit-if-changed .
       - run: flutter build appbundle --release --flavor googlePlay
       - run: mkdir -p android/app/build/outputs/bundle/
-      - run: mv build/app/outputs/bundle/appcenterRelease/app-appcenter-release.aab $_
+      - run: mv build/app/outputs/bundle/googleplayRelease/app-googleplay-release.aab $_
       # Upload generated appbundle to the artifacts.
       - uses: actions/upload-artifact@v1
         with:
           name: release-apk
-          path: android/app/build/outputs/bundle/app-appcenter-release.aab
+          path: android/app/build/outputs/bundle/app-googleplay-release.aab
