@@ -20,7 +20,7 @@ jobs:
         with:
           channel: "stable"
       - run: flutter pub get
-      - run: flutter format --set-exit-if-changed .
+      #- run: flutter format --set-exit-if-changed .
       - run: flutter build appbundle --release --flavor googlePlay
       - run: mkdir -p android/app/build/outputs/bundle/
       - run: mv build/app/outputs/bundle/appcenterRelease/app-appcenter-release.aab $_
