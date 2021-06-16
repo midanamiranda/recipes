@@ -10,9 +10,9 @@ flutter doctor
 echo "Installed flutter to `pwd`/flutter"
 cd ..
 pwd
-#flutter build apk --release --flavor appCenter
-#mkdir -p android/app/build/outputs/apk/
-#mv build/app/outputs/flutter-apk/app-appcenter-release.apk $_
+flutter build apk
+mkdir -p android/app/build/outputs/apk/
+mv build/app/outputs/flutter-apk/app-release.apk $_
 flutter build appbundle # --release --flavor appCenter
 mkdir -p android/app/build/outputs/bundle/
 mv build/app/outputs/bundle/release/app-release.aab $_
