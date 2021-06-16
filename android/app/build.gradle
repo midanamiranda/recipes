@@ -49,17 +49,6 @@ android {
         buildConfigField "String", "ANDROID_APP_SECRET", "\"${System.getenv("RECIPES_ANDROID_APP_SECRET")}\""
     }
 
-    flavorDimensions "distribute"
-    productFlavors {
-        appCenter {
-            dimension "distribute"
-        }
-
-        googlePlay {
-            dimension "distribute"
-        }
-    }
-
     applicationVariants.all { variant ->
         variant.outputs.all {
             def taskSuffix = variant.name.capitalize()
@@ -71,7 +60,7 @@ android {
                     def originalFileName = "${project.archivesBaseName}-${variant.productFlavors.name.join('-')}-${variant.buildType.name}.aab"
                     from "${bundleBuildDir}/${originalDirPath}/${originalFileName}"
                     into "${bundleBuildDir}/${variant.buildType.name}/"
-                    rename ("${originalFileName}", "app.aab")
+                    rename ("${originalFileName}", "myApp.aab")
                 }
                 tasks[bundleTaskName].finalizedBy = [copyAABTask]
             }
