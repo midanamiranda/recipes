@@ -8,8 +8,9 @@ import 'package:recipes/services/models/recipes_result.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:recipes/core/extensions.dart';
 
-Widget buildRecipeCard(Recipe recipe) {
+Widget buildRecipeCard(Recipe recipe, {Key key}) {
   return Card(
+    key: key,
     elevation: 1,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(5.0),

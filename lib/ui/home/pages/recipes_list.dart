@@ -14,10 +14,11 @@ class RecipesList extends StatelessWidget {
       Text('');
       else return
       ListView.builder(
+        key: Key('your-recipe-list'),
         scrollDirection: Axis.vertical,
         itemCount: recipes.length,
         itemBuilder: (BuildContext ctx, index) {
-          return buildRecipeCard(recipes[index]);
+          return buildRecipeCard(recipes[index], key: Key('recipe_$index'));
         }
     );
   }

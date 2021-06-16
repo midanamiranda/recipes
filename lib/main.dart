@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
+// import 'package:flutter_appcenter_bundle/flutter_appcenter_bundle.dart';
 import 'package:recipes/services/models/recipes_result.dart';
 import 'dart:async' show Future;
 import 'package:flutter/services.dart' show rootBundle;
@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> appCenter() async {
+  /*Future<void> appCenter() async {
     WidgetsFlutterBinding.ensureInitialized();
     const platform = const MethodChannel('recipes.platform/appcenter');
 
@@ -91,5 +91,5 @@ class _MyHomePageState extends State<MyHomePage> {
     await AppCenter.configureDistributeAsync(enabled: true);
     // await AppCenter.configureDistributeDebugAsync(enabled: true); // Android Only
     // await AppCenter.checkForUpdateAsync(); // Manually check for update
-  }
+  }*/
 }

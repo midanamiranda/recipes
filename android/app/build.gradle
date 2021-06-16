@@ -49,14 +49,21 @@ android {
         buildConfigField "String", "ANDROID_APP_SECRET", "\"${System.getenv("RECIPES_ANDROID_APP_SECRET")}\""
     }
 
-    flavorDimensions "distribute"
-    productFlavors {
-        appCenter {
-            dimension "distribute"
-        }
-
-        googlePlay {
-            dimension "distribute"
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def taskSuffix = variant.name.capitalize()
+            def bundleTaskName = "bundle${taskSuffix}"
+            if (tasks.findByName(bundleTaskName)) {
+                def copyAABTask = tasks.create(name: "copyAndRenameAab${taskSuffix}", type: Copy) {
+                    def bundleBuildDir = "${buildDir}/outputs/bundle"
+                    def originalDirPath = "${variant.productFlavors.name.join()}${variant.buildType.name}"
+                    def originalFileName = "${project.archivesBaseName}-${variant.productFlavors.name.join('-')}-${variant.buildType.name}.aab"
+                    from "${bundleBuildDir}/${originalDirPath}/${originalFileName}"
+                    into "${bundleBuildDir}/${variant.buildType.name}/"
+                    rename ("${originalFileName}", "myApp.aab")
+                }
+                tasks[bundleTaskName].finalizedBy = [copyAABTask]
+            }
         }
     }
 
@@ -82,4 +89,10 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    testImplementation 'junit:junit:4.12'
+
+    // https://developer.android.com/jetpack/androidx/releases/test/#1.2.0
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }

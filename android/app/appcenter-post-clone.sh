@@ -10,9 +10,9 @@ flutter doctor
 echo "Installed flutter to `pwd`/flutter"
 cd ..
 pwd
-flutter build apk --release --flavor googlePlay
-mkdir -p android/app/build/outputs/apk/
-mv build/app/outputs/flutter-apk/app-googleplay-release.apk $_
-flutter build appbundle --release --flavor googlePlay
+#flutter build apk --release --flavor appCenter
+#mkdir -p android/app/build/outputs/apk/
+#mv build/app/outputs/flutter-apk/app-appcenter-release.apk $_
+flutter build appbundle # --release --flavor appCenter
 mkdir -p android/app/build/outputs/bundle/
-mv build/app/outputs/bundle/googleplayRelease/app-googleplay-release.aab $_
+mv build/app/outputs/bundle/release/app-release.aab $_
