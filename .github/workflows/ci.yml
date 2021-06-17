@@ -41,11 +41,3 @@ jobs:
         with:
           name: release-aab
           path: build/app/outputs/bundle/release/app-release.aab
-      - name: Release to Google Play (alpha)
-        env:
-          SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
-          SUPPLY_JSON_KEY_DATA: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-        run: |
-          bundle exec fastlane supply \
-          --aab build/app/outputs/bundle/release/app-release.aab \
-          --track alpha
