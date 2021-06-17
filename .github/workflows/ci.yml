@@ -7,8 +7,6 @@ on:
 jobs:
   build_appbundle:
     name: Flutter Build (Android)
-    env:
-      APPCENTER_BUILD_ID: 1
     runs-on: ubuntu-latest
     steps:
       - name: Print Actions Build Number
@@ -34,9 +32,20 @@ jobs:
           echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
       - name: Get Flutter Packages
         run: flutter pub get
+      - name: Set Build Id
+        run: |
+          echo "APPCENTER_BUILD_ID=$GITHUB_RUN_NUMBER" >> $GITHUB_ENV
       - name: Build Android App Bundle
         run: flutter build appbundle
       - uses: actions/upload-artifact@v1
         with:
           name: release-aab
           path: build/app/outputs/bundle/release/app-release.aab
+      - name: Release to Google Play (alpha)
+        env:
+          SUPPLY_PACKAGE_NAME: ${{ secrets.ANDROID_PACKAGE_NAME }}
+          SUPPLY_JSON_KEY_DATA: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+        run: |
+          bundle exec fastlane supply \
+          --aab build/app/outputs/bundle/release/app-release.aab \
+          --track alpha
