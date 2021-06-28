@@ -12,7 +12,7 @@ jobs:
       - name: Validate no [RELEASE] tag on commit message
         uses: gsactions/commit-message-checker@v1
         with:
-          pattern: '^(?!.*RELEASE)'
+          pattern: '^(?!.*RELEASE*)'
           flags: 'gm'
           error: 'This is a [RELEASE] tagged commit. Skipping Emulator Test jobs..'
 
