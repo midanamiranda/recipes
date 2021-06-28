@@ -18,6 +18,7 @@ jobs:
 
   job2:
     name: Remaining Release Job
+    needs: check_is_release
     runs-on: ubuntu-latest
     steps:
       - name: Set Build Id
