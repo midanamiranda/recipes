@@ -1,0 +1,24 @@
+name: QA - Store
+on:
+  push:
+    branches:
+      - distribute
+
+jobs:
+  check_is_release:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate [RELEASE] tag on commit message
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '^(.*)(\bRELEASE\b)(.*?)$'
+          flags: 'gm'
+          error: 'This is not a [RELEASE] tagged commit. Skipping remaining jobs..'
+
+  job2:
+    name: Remaining Release Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Build Id
+        run: echo "Running Remaining Release Job"

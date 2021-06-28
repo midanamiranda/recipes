@@ -12,47 +12,14 @@ jobs:
       - name: Validate no [RELEASE] tag on commit message
         uses: gsactions/commit-message-checker@v1
         with:
-          pattern: '^((?![RELEASE]).)*$'
+          pattern: '^((?!RELEASE).)*$'
           flags: 'gm'
           error: 'This is a [RELEASE] tagged commit. Skipping remaining jobs..'
 
-  flutter_drive_test:
-    name: Run Flutter Drive Test
-    needs: check_is_not_release
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        device:
-          - "pixel_xl"
-      fail-fast: false
+  job2:
+    name: Remaining Test Job
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
-        with:
-          java-version: "12.x"
-      - uses: subosito/flutter-action@v1
-        with:
-          channel: "stable"
-      - name: Download Android keystore
-        id: android_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: key.jks
-          encodedString: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-      - name: Create key.properties
-        run: |
-          echo "storeFile=${{ steps.android_keystore.outputs.filePath }}" > android/key.properties
-          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> android/key.properties
-          echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> android/key.properties
-          echo "keyAlias=${{ secrets.ANDROID_KEY_ALIAS }}" >> android/key.properties
-      - name: Run onboarding drive test
-        env:
-          ANDROID_BUILD_ID: 1
-        uses: reactivecircus/android-emulator-runner@v2.15.0
-        with:
-          api-level: 29
-          profile: ${{ matrix.device }}
-          script: |
-            export ANDROID_DEBUG=true
-            flutter pub get
-            flutter drive --driver=test_driver/integration_driver.dart --target=integration_test/app_test.dart
+      - name: Set Build Id
+        run: echo "Running Remaining Test Job"
+
