@@ -1,0 +1,44 @@
+name: QA
+on:
+  push:
+    branches:
+      - distribute
+
+jobs:
+  check_is_not_release:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate no [RELEASE] tag on commit message
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '^((?!RELEASE).)*$'
+          flags: 'gm'
+          error: 'This is a [RELEASE] tagged commit. Skipping Emulator Test jobs..'
+
+  check_is_release:
+    name: Check Commit Message
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate [RELEASE] tag on commit message
+        uses: gsactions/commit-message-checker@v1
+        with:
+          pattern: '^(.*)(\bRELEASE\b)(.*?)$'
+          flags: 'gm'
+          error: 'This is not a [RELEASE] tagged commit. Skipping Release jobs..'
+
+  emulator_test:
+    name: Remaining Test Job
+    needs: check_is_not_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Remaining Test Job
+        run: echo "Running Remaining Test Job"
+
+  alpha_release:
+    name: Remaining Release Job
+    needs: check_is_release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Remaining Release Job
+        run: echo "Running Remaining Release Job"
