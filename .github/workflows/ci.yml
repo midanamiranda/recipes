@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     branches:
-      - develop
+      - master
 
 jobs:
   build_appbundle:
@@ -39,5 +39,5 @@ jobs:
         run: flutter build appbundle
       - uses: actions/upload-artifact@v1
         with:
-          name: release-aab
+          name: release-aab.aab
           path: build/app/outputs/bundle/release/app-release.aab
