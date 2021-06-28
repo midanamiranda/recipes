@@ -6,7 +6,7 @@ on:
 
 jobs:
   check_is_not_release:
-    name: Check Commit Message
+    name: Validate Internal QA PR
     runs-on: ubuntu-latest
     steps:
       - name: Validate no [RELEASE] tag on commit message
@@ -17,7 +17,7 @@ jobs:
           error: 'This is a [RELEASE] tagged commit. Skipping Emulator Test jobs..'
 
   check_is_release:
-    name: Check Commit Message
+    name: Validate Alpha Release PR
     runs-on: ubuntu-latest
     steps:
       - name: Validate [RELEASE] tag on commit message
