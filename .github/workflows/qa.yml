@@ -8,7 +8,7 @@ jobs:
 
   emulator_test:
     name: Remaining Test Job
-    if: !startsWith(github.event.pull_request.body, '[RELEASE]')
+    if: startsWith(github.event.pull_request.body, '[RELEASE]') != true
     runs-on: ubuntu-latest
     steps:
       - name: Run Remaining Test Job
