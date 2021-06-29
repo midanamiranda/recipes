@@ -5,25 +5,11 @@ on:
       - distribute
 
 jobs:
-  check_commit_message:
-    name: Check Commit Message for Release Tag
-    runs-on: ubuntu-latest
-    outputs:
-      output: ${{ steps.getcommittag.outputs.release }}
-    steps:
-      - name: get commit message
-        run: |
-          echo $(git log --format=%B -n 1 ${{ github.event.after }})
-      # "commitmsg=$(git log --format=%B -n 1 ${{ github.event.after }})" >> $GITHUB_ENV
-      - run: echo $commitmsg
-      - name: show commit message
-        id: getcommittag
-        run: echo "::set-output name=release::$(contains($commitmsg, 'RELEASE'))"
 
   emulator_test:
     name: Remaining Test Job
     needs: check_commit_message
-    if: ${{needs.check_commit_message.outputs.output}} == 'false'
+    if: !startsWith(github.event.pull_request.body, '[RELEASE]')
     runs-on: ubuntu-latest
     steps:
       - name: Run Remaining Test Job
@@ -33,7 +19,7 @@ jobs:
   alpha_release:
     name: Remaining Release Job
     needs: check_commit_message
-    if: ${{needs.check_commit_message.outputs.output}} == 'true'
+    if: startsWith(github.event.pull_request.body, '[RELEASE]')
     runs-on: ubuntu-latest
     steps:
       - name: Run Remaining Release Job
