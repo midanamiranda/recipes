@@ -20,6 +20,40 @@ jobs:
     if: startsWith(github.event.pull_request.body, '[RELEASE]')
     runs-on: ubuntu-latest
     steps:
-      - name: Run Remaining Release Job
-        run: echo "Running Remaining Release Job"
-      - run: echo ${{needs.check_commit_message.outputs.output}}
+      # Setup Java and Flutter
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: "12.x"
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+
+      # Flutter Clean and pub get
+      - name: Clean Flutter Packages
+        run: flutter clean
+      - name: Get Flutter Packages
+        run: flutter pub get
+
+      - name: Assemble Android drive test artifacts
+        run: pushd android
+          && flutter build apk
+          && ./gradlew app:assembleAndroidTest
+          && ./gradlew app:assembleDebug -Ptarget=integration_test/app_test.dart
+          && popd
+
+      - name: Login to Google Cloud
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: `270.0.0`
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+
+      - name: Set current project
+        run: gcloud config set project ${{ secrets.FIREBASE_PROJECT_ID }}
+
+      - name: Run Instrumentation Tests in Firebase Test Lab
+        run: gcloud firebase test android run
+          --type instrumentation
+          --app build/app/outputs/apk/debug/app-debug.apk
+          --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          --device model=Pixel2,version=28,locale=pl,orientation=portrait
