@@ -21,6 +21,19 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+// Creates a variable called keystorePropertiesFile, and initializes it to the
+// keystore.properties file.
+def keystorePropertiesFile = rootProject.file("key.properties")
+// Initializes a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+// Loads the keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+def signingKeyFilePath = keystoreProperties.getProperty('storeFile')
+def signingKeyAlias = keystoreProperties.getProperty('keyAlias')
+def signingKeyPassword = keystoreProperties.getProperty('keyPassword')
+def signingStorePassword = keystoreProperties.getProperty('storePassword')
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
@@ -41,7 +54,7 @@ android {
         applicationId "cv.bebrave.health.recipes"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode System.getenv('APPCENTER_BUILD_ID').toInteger() // flutterVersionCode.toInteger()
+        versionCode 1 // System.getenv('ANDROID_BUILD_ID').toInteger() // flutterVersionCode.toInteger()
         versionName flutterVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -67,18 +80,18 @@ android {
         }
     }
 
-    // signingConfigs {
-        // release {
-            // storeFile rootProject.file("app/recipes_keystore.jks")
-            // storePassword System.getenv("APPCENTER_KEYSTORE_PASSWORD")
-            // keyAlias System.getenv("APPCENTER_KEY_ALIAS")
-            // keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
-        //  }
-    // }
+    signingConfigs {
+        config {
+            keyAlias = signingKeyAlias
+            keyPassword = signingKeyPassword
+            storeFile = file(signingKeyFilePath)
+            storePassword = signingStorePassword
+        }
+    }
 
     buildTypes {
         release {
-            // signingConfig signingConfigs.release
+            signingConfig signingConfigs.config
         }
     }
 }
